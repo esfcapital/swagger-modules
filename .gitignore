@@ -2,3 +2,5 @@
 /build/
 /gradle/
 /out/
+/.classpath
+/.project
