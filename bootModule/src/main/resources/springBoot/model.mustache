@@ -1,0 +1,88 @@
+package {{package}};
+
+import java.util.Objects;
+
+import javax.persistence.MappedSuperclass;
+
+import com.fasterxml.jackson.annotation.*;
+
+{{#imports}}import {{import}};
+{{/imports}}
+{{#models}}
+{{#model}}{{#description}}
+/**
+ * {{description}}
+ */{{/description}}
+@ApiModel(description = "{{{description}}}")
+{{>generatedAnnotation}}
+@MappedSuperclass{{#vendorExtensions.x-metapack-annotations}}
+@{{.}}{{/vendorExtensions.x-metapack-annotations}}
+public class {{classname}}{{#parent}} extends {{{parent}}}{{/parent}} {
+	{{#vars}}{{#isEnum}}
+	public enum {{datatypeWithEnum}} {
+		{{#allowableValues}}{{#values}} {{.}}, {{/values}}{{/allowableValues}}
+	};
+	private {{{datatypeWithEnum}}} {{name}} = {{{defaultValue}}};{{/isEnum}}{{^isEnum}}
+	private {{{datatype}}} {{name}} = {{{defaultValue}}};{{/isEnum}}{{/vars}}
+	{{#vars}}
+	/**{{#description}}
+	 * Get {{{description}}}{{/description}}{{#minimum}}
+	 * minimum: {{min}}{{/minimum}}{{#maximum}}
+	 * maximum: {{max}}{{/maximum}}
+	 *
+	 * @return {{name}}
+	 */
+	@ApiModelProperty({{#required}}required = {{required}}, {{/required}}value = "{{{description}}}")
+	@JsonProperty("{{baseName}}"){{#complexType}}
+	@javax.persistence.Transient
+	@javax.validation.Valid{{/complexType}}{{#min}}
+	@javax.validation.constraints.Min({{min}}){{/min}}{{#max}}
+	@javax.validation.constraints.Max({{max}}){{/max}}{{#required}}
+	@javax.validation.constraints.NotNull{{/required}}{{#pattern}}
+	@javax.validation.constraints.Pattern(regexp="{{{pattern}}}"){{/pattern}}
+	public {{{datatypeWithEnum}}} {{getter}}() {
+		return {{name}};
+	}
+
+	/**{{#description}}
+	 * Set {{{description}}}{{/description}}
+	 * {{#description}}
+	 * @param {{name}} {{{description}}}{{/description}}
+	 */
+	public void {{setter}}({{{datatypeWithEnum}}} {{name}}) {
+		this.{{name}} = {{name}};
+	}
+	{{/vars}}
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		
+		if (o == null || getClass() != o.getClass()) {
+			return false;
+		}
+		
+		{{classname}} {{classVarName}} = ({{classname}}) o;{{#hasVars}}
+		return {{#vars}}Objects.equals({{name}}, {{classVarName}}.{{name}}){{#hasMore}} &&
+			{{/hasMore}}{{^hasMore}};{{/hasMore}}{{/vars}}{{/hasVars}}{{^hasVars}}
+		return true;{{/hasVars}}
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash({{#vars}}{{name}}{{#hasMore}}, {{/hasMore}}{{/vars}});
+	}
+
+	@Override
+	public String toString()  {
+		StringBuilder sb = new StringBuilder();
+		sb.append("Class {{classname}} {\n");
+		{{#parent}}sb.append("  " + super.toString()).append("\n");{{/parent}}
+		{{#vars}}sb.append("  {{name}}: ").append({{name}}).append("\n");
+		{{/vars}}sb.append("}\n");
+		return sb.toString();
+	}
+}
+{{/model}}
+{{/models}}

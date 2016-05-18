@@ -1,0 +1,33 @@
+package {{apiPackage}};
+
+/**
+ * Generic API Exception
+ *
+ */
+{{>generatedAnnotation}}
+public class ApiException extends RuntimeException {
+
+	private static final long serialVersionUID = 1L;
+
+	private int code;
+	
+	/**
+	 * Generic API Exception Constructor
+	 *
+	 * @param code Exception code
+	 * @param msg Exception message
+	 */
+	public ApiException(int code, String msg) {
+		super(msg);
+		this.code = code;
+	}
+	
+	/**
+	 * Gets the Exception Code
+	 *
+	 * @return code
+	 */
+	public int getCode() {
+		return code;
+	}
+}

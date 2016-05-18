@@ -1,0 +1,18 @@
+group 'cucina'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'io.swagger:swagger-codegen:2.1.6'
+    compile 'io.swagger:swagger-codegen-cli:2.1.6'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-all:1.9.5'
+}

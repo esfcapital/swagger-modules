@@ -1,0 +1,131 @@
+swagger: '2.0'
+info:
+  title: Ranger
+  description: Ranger service
+  version: 0.0.1
+schemes:
+  - https
+produces:
+  - application/json
+paths:
+  /next/:
+    get:
+      summary: Generate next number
+      operationId: next
+      parameters:
+      - name: accountNo
+        in: query
+        required: true
+        type: string
+      - name: retailer
+        in: query
+        required: false
+        type: string        
+      responses:
+        '200':
+          description: Next number
+          schema:
+            type: integer
+        '500':
+          description: Unexpected error
+  /range:
+    post:
+      summary: Create a range, should not allow to overwrite an existing one
+      operationId: create
+      parameters:
+      - name: range
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Range'
+        x-metapack-validated: true  
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: string
+        '400':
+          description: User error
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      summary: Load all ranges
+      operationId: loadAll
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Range'
+        '500':
+          description: Unexpected error 
+         
+  /range/accountNo/{accountNo}/retailer/{retailer}:
+    put:
+      summary: reset the range
+      operationId: resetRange
+      parameters:
+      - name: accountNo
+        in: path
+        required: true
+        type: string
+      - name: retailer
+        in: path
+        required: false
+        type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: string
+        '400': 
+          description: User error
+          schema:
+            $ref: '#/definitions/Error'
+    
+definitions:
+  Range:
+    type: object
+    required:
+    - accountNo
+    - start
+    - end
+    x-metapack-annotations:
+    - javax.validation.NotNull
+    - javax.validation.Aha
+    properties:
+      start:
+        type: integer
+        description: Starting number of the range 
+        minimum: 1
+      end:
+        type: integer
+        description: End number of the range
+        maximum: 100000
+      current:
+        type: integer
+        description: current value
+      accountNo:
+        type: string
+        description: carrier account identifier, combination of it with an optional retailer is a unique one
+        required: 
+      retailer:
+        type: string
+        description: retailer identifier, if null the range applies to all retailers
+        pattern: retailer*
+      allowRollover:
+        type: boolean
+        default: true
+        description: if enabled the range restarts from the start when end is reached, otherwise emit an error.
+      nextRange:
+        $ref: '#/definitions/Range'
+  Error:
+    type: object
+    properties:
+      message:
+        type: string
+        description: Error message
+      code:
+        type: string
+        description: Error code        
