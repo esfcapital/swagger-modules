@@ -23,6 +23,8 @@ public class SpringBootServerCodegen extends SpringMVCServerCodegen {
      */
     public static final String RESOURCE_FOLDER = "resourceFolder";
 
+    private static final String LANGUAGE = "springBoot";
+
     private String resourceFolder;
 
     private String basePackage;
@@ -69,7 +71,7 @@ public class SpringBootServerCodegen extends SpringMVCServerCodegen {
 
     @Override
     public String getName() {
-        return "springBoot";
+        return LANGUAGE;
     }
 
     @Override
@@ -91,9 +93,6 @@ public class SpringBootServerCodegen extends SpringMVCServerCodegen {
 
         supportingFiles.clear();
         supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
-        supportingFiles.add(new SupportingFile("apiException.mustache",
-                (sourceFolder + java.io.File.separator + apiPackage).replace(".", java.io.File.separator),
-                "ApiException.java"));
         supportingFiles.add(new SupportingFile("apiOriginFilter.mustache",
                 (sourceFolder + java.io.File.separator + apiPackage).replace(".", java.io.File.separator),
                 "ApiOriginFilter.java"));
@@ -119,6 +118,9 @@ public class SpringBootServerCodegen extends SpringMVCServerCodegen {
         supportingFiles.add(new SupportingFile("application.mustache",
                 (sourceFolder + java.io.File.separator + basePackage).replace(".", java.io.File.separator),
                 "Application.java"));
+        supportingFiles.add(new SupportingFile("package-info.mustache",
+                (sourceFolder + java.io.File.separator + modelPackage).replace(".", java.io.File.separator),
+                "package-info.java"));
 
     }
 

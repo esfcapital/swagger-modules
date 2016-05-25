@@ -2,8 +2,6 @@ package {{package}};
 
 import java.util.Objects;
 
-import javax.persistence.MappedSuperclass;
-
 import com.fasterxml.jackson.annotation.*;
 
 {{#imports}}import {{import}};
@@ -15,8 +13,8 @@ import com.fasterxml.jackson.annotation.*;
  */{{/description}}
 @ApiModel(description = "{{{description}}}")
 {{>generatedAnnotation}}
-@MappedSuperclass{{#vendorExtensions.x-metapack-annotations}}
-@{{.}}{{/vendorExtensions.x-metapack-annotations}}
+{{#vendorExtensions.x-cucina-annotations}}
+@{{.}}{{/vendorExtensions.x-cucina-annotations}}
 public class {{classname}}{{#parent}} extends {{{parent}}}{{/parent}} {
 	{{#vars}}{{#isEnum}}
 	public enum {{datatypeWithEnum}} {

@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
-  title: Ranger
-  description: Ranger service
+  title: Generator
+  description: Generator service
   version: 0.0.1
 schemes:
   - https
@@ -13,14 +13,10 @@ paths:
       summary: Generate next number
       operationId: next
       parameters:
-      - name: accountNo
+      - name: userId
         in: query
         required: true
         type: string
-      - name: retailer
-        in: query
-        required: false
-        type: string        
       responses:
         '200':
           description: Next number
@@ -28,17 +24,17 @@ paths:
             type: integer
         '500':
           description: Unexpected error
-  /range:
+  /scope:
     post:
-      summary: Create a range, should not allow to overwrite an existing one
+      summary: Create a scope, should not allow to overwrite an existing one
       operationId: create
       parameters:
-      - name: range
+      - name: scope
         in: body
         required: true
         schema:
-          $ref: '#/definitions/Range'
-        x-metapack-validated: true  
+          $ref: '#/definitions/Scope'
+        x-cucina-validated: true  
       responses:
         '200':
           description: Success
@@ -49,7 +45,7 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     get:
-      summary: Load all ranges
+      summary: Load all scopes
       operationId: loadAll
       responses:
         '200':
@@ -57,22 +53,18 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Range'
+              $ref: '#/definitions/Scope'
         '500':
           description: Unexpected error 
          
-  /range/accountNo/{accountNo}/retailer/{retailer}:
+  /scope/userId/{userId}:
     put:
-      summary: reset the range
-      operationId: resetRange
+      summary: reset the scope
+      operationId: resetScope
       parameters:
-      - name: accountNo
+      - name: userId
         in: path
         required: true
-        type: string
-      - name: retailer
-        in: path
-        required: false
         type: string
       responses:
         '200':
@@ -85,41 +77,37 @@ paths:
             $ref: '#/definitions/Error'
     
 definitions:
-  Range:
+  Scope:
     type: object
     required:
-    - accountNo
+    - userId
     - start
     - end
-    x-metapack-annotations:
+    x-cucina-annotations:
     - javax.validation.NotNull
     - javax.validation.Aha
     properties:
       start:
         type: integer
-        description: Starting number of the range 
+        description: Starting number of the scope 
         minimum: 1
       end:
         type: integer
-        description: End number of the range
+        description: End number of the scope
         maximum: 100000
       current:
         type: integer
         description: current value
-      accountNo:
+      userId:
         type: string
-        description: carrier account identifier, combination of it with an optional retailer is a unique one
+        description: user's id
         required: 
-      retailer:
-        type: string
-        description: retailer identifier, if null the range applies to all retailers
-        pattern: retailer*
-      allowRollover:
+      autoReset:
         type: boolean
         default: true
-        description: if enabled the range restarts from the start when end is reached, otherwise emit an error.
-      nextRange:
-        $ref: '#/definitions/Range'
+        description: if enabled the scope restarts from the start when end is reached, otherwise emit an error.
+      nextScope:
+        $ref: '#/definitions/Scope'
   Error:
     type: object
     properties:
