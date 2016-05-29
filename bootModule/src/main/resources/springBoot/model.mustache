@@ -32,7 +32,6 @@ public class {{classname}}{{#parent}} extends {{{parent}}}{{/parent}} {
 	 */
 	@ApiModelProperty({{#required}}required = {{required}}, {{/required}}value = "{{{description}}}")
 	@JsonProperty("{{baseName}}"){{#complexType}}
-	@javax.persistence.Transient
 	@javax.validation.Valid{{/complexType}}{{#min}}
 	@javax.validation.constraints.Min({{min}}){{/min}}{{#max}}
 	@javax.validation.constraints.Max({{max}}){{/max}}{{#required}}
