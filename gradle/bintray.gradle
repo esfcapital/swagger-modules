@@ -1,0 +1,64 @@
+// To apply this configuration:
+// 	apply from: "gradle/bintray.gradle"
+//
+// The following properties must be defined before applying this configuration: 
+//	* project.name			- Logical name of artifact.
+//  * project.description	- Name that will be published to bintray. 
+//  * repositoryUser		- Username used to publish to bintray.
+//  * repositoryPass		- API Key used to publish to bintray.
+//
+// NOTE: repositoryUser and repositoryPass should be set in 
+// 		 the ~/.gradle/gradle.properties or by Jenkins.
+//
+apply plugin: 'maven'
+apply plugin: 'maven-publish'    
+apply plugin: 'com.jfrog.bintray'
+	
+
+bintray {
+	user = repositoryUser
+	key = repositoryPass
+	configurations = ['archives']
+	publish = true
+
+	pkg {
+		repo = "cucina"
+		userOrg = "${repositoryUser}"
+		name = project.name
+		desc = project.description
+		labels = ["${repositoryUser}", "swagger"]
+		licenses = ['Apache-2.0']
+        vcsUrl = 'https://github.com/cucina/swagger-modules.git'
+	}
+}
+
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+	classifier = 'sources'
+	from sourceSets.main.allSource
+	manifest = jar.manifest
+}
+
+artifacts {
+	archives sourcesJar
+}
+
+publishing {
+	publications {
+		archives(MavenPublication) {
+			from components.java
+			
+			artifact sourcesJar {
+				classifier "sources"
+			}
+
+			groupId project.group
+			artifactId project.name
+			version project.version
+		}
+	}
+}
+
+publish {
+	dependsOn(bintrayUpload)
+}
