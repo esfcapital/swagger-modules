@@ -51,7 +51,7 @@ public class {{classname}} {
     {{#hasConsumes}}consumes = { {{#consumes}}"{{mediaType}}"{{#hasMore}}, {{/hasMore}}{{/consumes}} },{{/hasConsumes}}
     method = RequestMethod.{{httpMethod}})
   public ResponseEntity<{{{returnType}}}> {{nickname}}({{#allParams}}{{>queryParams}}{{>pathParams}}{{>headerParams}}{{>bodyParams}}{{>formParams}}{{#hasMore}},
-    {{/hasMore}}{{/allParams}}) {
+    {{/hasMore}}{{/allParams}}{{#vendorExtensions.x-cucina-response}}, javax.servlet.http.HttpServletResponse response{{/vendorExtensions.x-cucina-response}}) {
       return new ResponseEntity<{{{returnType}}}>({{nickname}}Bean.{{nickname}}({{#allParams}}{{paramName}}{{#hasMore}}, {{/hasMore}}{{/allParams}}),HttpStatus.OK);
   }
   @Autowired

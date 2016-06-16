@@ -12,6 +12,7 @@ paths:
     get:
       summary: Generate next number
       operationId: next
+      x-cucina-response: true
       parameters:
       - name: userId
         in: query
