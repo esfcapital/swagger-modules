@@ -42,13 +42,6 @@ public class SpringBootServerCodegen extends SpringMVCServerCodegen {
 
         cliOptions.add(new CliOption(RESOURCE_FOLDER, "resource folder for generated resources"));
         cliOptions.add(new CliOption(BASE_PACKAGE, "base package for generated Spring Boot Application"));
-
-        supportedLibraries.clear();
-        supportedLibraries.put(DEFAULT_LIBRARY, "Default Spring Boot server stub.");
-        supportedLibraries.put("j8-async",
-                "Use async servlet feature and Java 8's default interface. Generating interface with service "
-                        + "declaration is useful when using Maven plugin. "
-                        + "Just provide a implementation with @Controller to instantiate service.");
     }
 
     /**

@@ -46,7 +46,7 @@ subprojects {
 
 allprojects {
 	group = 'com.opencucina'
-	version = '0.0.1'
+	version = '0.0.3'
 }
 
 

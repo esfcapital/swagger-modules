@@ -88,6 +88,9 @@ definitions:
     - javax.validation.NotNull
     - javax.validation.Aha
     properties:
+      id:
+        type: integer
+        x-cucina-annotations: Id
       start:
         type: integer
         description: Starting number of the scope 

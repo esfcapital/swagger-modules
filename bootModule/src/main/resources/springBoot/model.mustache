@@ -1,6 +1,11 @@
 package {{package}};
 
 import java.util.Objects;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.SqlResultSetMapping;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -14,14 +19,34 @@ import com.fasterxml.jackson.annotation.*;
 @ApiModel(description = "{{{description}}}")
 {{>generatedAnnotation}}
 {{#vendorExtensions.x-cucina-annotations}}
-@{{.}}{{/vendorExtensions.x-cucina-annotations}}
+@{{.}}
+{{/vendorExtensions.x-cucina-annotations}}
+@Entity
+@SqlResultSetMapping(name = "{{classname}}", classes = {
+@ConstructorResult(targetClass = {{classname}}.class,
+columns = { {{#vars}}@ColumnResult(
+name = "{{name}}", type= {{{datatype}}}.class){{#hasMore}},{{/hasMore}}
+{{/vars}} })
+})
 public class {{classname}}{{#parent}} extends {{{parent}}}{{/parent}} {
 	{{#vars}}{{#isEnum}}
 	public enum {{datatypeWithEnum}} {
 		{{#allowableValues}}{{#values}} {{.}}, {{/values}}{{/allowableValues}}
 	};
 	private {{{datatypeWithEnum}}} {{name}} = {{{defaultValue}}};{{/isEnum}}{{^isEnum}}
+    {{#vendorExtensions.x-cucina-annotations}}@{{.}}{{/vendorExtensions.x-cucina-annotations}}
 	private {{{datatype}}} {{name}} = {{{defaultValue}}};{{/isEnum}}{{/vars}}
+
+public {{classname}}({{#vars}}{{{datatype}}} {{name}}{{#hasMore}},{{/hasMore}}
+{{/vars}}) {
+{{#vars}}
+    this.{{name}} = {{name}};
+{{/vars}}
+}
+
+public {{classname}}() {}
+
+
 	{{#vars}}
 	/**{{#description}}
 	 * Get {{{description}}}{{/description}}{{#minimum}}
