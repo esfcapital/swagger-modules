@@ -27,15 +27,9 @@ subprojects {
 	   }
 	
 	   repositories {
-    	  jcenter()
-    	
-    	  maven {
-            url "http://dl.bintray.com/${repositoryUser}/cucina"
-            credentials {
-                username repositoryUser
-                password repositoryPass
-            }
-          }
+		   maven {
+			   url 'http://artifactory.thincatsdev.com/thincats-dependencies'
+		   }
 	   }
 	
 	   tasks.withType(JavaCompile) {

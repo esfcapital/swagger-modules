@@ -2,8 +2,7 @@ package org.cucina.swagger.boot;
 
 import io.swagger.codegen.CliOption;
 import io.swagger.codegen.CodegenProperty;
-import io.swagger.codegen.SupportingFile;
-import io.swagger.codegen.languages.SpringMVCServerCodegen;
+import io.swagger.codegen.languages.SpringCodegen;
 import io.swagger.models.properties.AbstractNumericProperty;
 import io.swagger.models.properties.Property;
 
@@ -11,7 +10,7 @@ import io.swagger.models.properties.Property;
  * Swagger Code Generator to generate required Java Source Code for a Spring
  * Boot Server.
  */
-public class SpringBootServerCodegen extends SpringMVCServerCodegen {
+public class SpringBootServerCodegen extends SpringCodegen {
 
     /**
      * Base package for generated Spring Boot Application.
@@ -39,6 +38,10 @@ public class SpringBootServerCodegen extends SpringMVCServerCodegen {
         artifactId = "swagger-spring-boot-server";
         basePackage = "io.swagger";
         resourceFolder = "src.main.resources";
+        java8 = true;
+        async = true;
+        additionalProperties.put(JAVA_8, true);
+        additionalProperties.put(ASYNC, true);
 
         cliOptions.add(new CliOption(RESOURCE_FOLDER, "resource folder for generated resources"));
         cliOptions.add(new CliOption(BASE_PACKAGE, "base package for generated Spring Boot Application"));
@@ -83,6 +86,7 @@ public class SpringBootServerCodegen extends SpringMVCServerCodegen {
         if (additionalProperties.containsKey(BASE_PACKAGE)) {
             this.setBasePackage((String) additionalProperties.get(BASE_PACKAGE));
         }
+/*
 
         supportingFiles.clear();
         supportingFiles.add(new SupportingFile("pom.mustache", "", "pom.xml"));
@@ -114,6 +118,7 @@ public class SpringBootServerCodegen extends SpringMVCServerCodegen {
         supportingFiles.add(new SupportingFile("package-info.mustache",
                 (sourceFolder + java.io.File.separator + modelPackage).replace(".", java.io.File.separator),
                 "package-info.java"));
+*/
 
     }
 

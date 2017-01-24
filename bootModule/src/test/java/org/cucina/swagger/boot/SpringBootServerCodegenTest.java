@@ -74,7 +74,7 @@ public class SpringBootServerCodegenTest {
 //		final String expectedResourceFolder = packageToPath("src.main.resources");
 
         SwaggerCodegen.main(new String[]{"generate", "-l", CODEGEN_NAME, "-i", "generator.yaml",
-                "-o", root.getAbsolutePath()});
+                "-o",  root.getAbsolutePath()});
 
         final List<String> files = java.nio.file.Files
                 .walk(java.nio.file.Paths.get(root.getAbsolutePath()))
