@@ -22,7 +22,7 @@ public class SpringBootServerCodegen extends SpringCodegen {
      */
     public static final String RESOURCE_FOLDER = "resourceFolder";
 
-    private static final String LANGUAGE = "springBoot";
+    private static final String LANGUAGE = "JavaSpring";
 
     private String resourceFolder;
 
@@ -128,14 +128,10 @@ public class SpringBootServerCodegen extends SpringCodegen {
         if (p instanceof AbstractNumericProperty) {
             AbstractNumericProperty bip = (AbstractNumericProperty) p;
             if (bip.getMinimum() != null) {
-                String min = String.format("%.0f", bip.getMinimum());
-                cp.min = min;
-                // cp.allowableValues.put("min", min);
+                cp.min = String.format("%.0f", bip.getMinimum());
             }
             if (bip.getMaximum() != null) {
-                String max = String.format("%.0f", bip.getMaximum());
-                cp.max = max;
-                // cp.allowableValues.put("max", max);
+                cp.max = String.format("%.0f", bip.getMaximum());
             }
         }
 
